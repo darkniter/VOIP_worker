@@ -40,14 +40,14 @@ def comparsion(smart, xl):
                     record.new_ip: [
                         record.__dict__,
                         smart[record.new_ip].__dict__
-                                    ]
+                                ]
                             })
             else:
                 double_record.append({
                     record.new_ip: [
                         record.__dict__,
                         smart[record.new_ip].__dict__
-                        ]
+                            ]
                         })
 
         elif record.old_ip in smart:
@@ -56,14 +56,14 @@ def comparsion(smart, xl):
                     record.old_ip: [
                         record.__dict__,
                         smart[record.old_ip].__dict__
-                        ]
+                            ]
                         })
             else:
                 double_record.append({
                     record.old_ip: [
                         record.__dict__,
                         smart[record.old_ip].__dict__
-                        ]
+                            ]
                         })
 
         else:
