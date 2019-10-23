@@ -1,12 +1,11 @@
 import openpyxl
-import json
-import os
 import config
 from filter_map import into_json
 
+
 class Record_xlsx():
 
-    def __init__(self, record = None):
+    def __init__(self, record=None):
         self.mod = record[1]
         self.old_ip = record[4]
         self.new_ip = record[5]
@@ -20,7 +19,7 @@ def main():
     sheet_tmp = {}
     count = 0
     for record in sheet:
-        sheet_tmp.update( **(record.__dict__.update({}'id': count))
+        sheet_tmp.update({count: record.__dict__})
         count += 1
     into_json(sheet_tmp, config.OUTPUTJSONEXCEL)
 
@@ -33,16 +32,18 @@ def loading_worksheet(name_sheet):
     work_sheet = wb[name_sheet].rows
     description = []
     for row in work_sheet:
-        loaded_row=[]
+        loaded_row = []
 
         if row[0].coordinate == 'A1':
             for desc in row:
-                if desc.value != None:
+                if desc.value is not None:
                     description.append(desc.value)
                 else:
                     description.append('')
             continue
-        if not((row[5].value == '' or row[4].value =='') and row[2].font.strike):
+        if not((row[5].value == '' or row[4].value == '')
+                and row[2].font.strike):
+
             for cell in row:
                 if cell.value is None:
                     cell.value = ''
@@ -50,6 +51,7 @@ def loading_worksheet(name_sheet):
                 loaded_row.append(cell.value)
             sheet.append(Record_xlsx(loaded_row))
     return sheet
+
 
 if __name__ == "__main__":
     main()
