@@ -41,8 +41,12 @@ def loading_worksheet(name_sheet):
                 else:
                     description.append('')
             continue
-        if (not (row[5].value == '' or row[4].value == '')
-                and (row[0].font.strike is not True)):
+        if (
+            not (
+                    (row[5].value == '' and row[4].value == '')
+                    or (row[0].font.strike is True)
+                )
+        ):
 
             for cell in row:
                 if cell.value is None:

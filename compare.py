@@ -9,10 +9,16 @@ def main():
     smart_map = xml_map()
     smart_map, doubles = format_smart(smart_map)
     into_json(doubles, config.DOUBLES)
-    found, not_found, double_record = comparsion(smart_map, excel)
+
+    found, not_found, double_record, not_found_ip = comparsion(
+                                                    smart_map,
+                                                    excel
+                                                    )
+
     into_json(found, config.FOUNDED)
     into_json(not_found, config.NOTFOUNDED)
     into_json(double_record, config.DOUBLERECORDS)
+    into_json(not_found_ip, config.NOTFOUNDED_IP)
     print('done')
 
 
@@ -29,6 +35,7 @@ def format_smart(smart):
 
 def comparsion(smart, xl):
     found = {}
+    not_found_ip = []
     not_found = []
     double_record = []
 
@@ -67,9 +74,13 @@ def comparsion(smart, xl):
                         })
 
         else:
+            not_found_ip.append({
+                'new_ip': record.new_ip,
+                'old_ip': record.old_ip
+                })
             not_found.append(record.__dict__)
 
-    return found, not_found, double_record
+    return found, not_found, double_record, not_found_ip
 
 
 if __name__ == "__main__":
