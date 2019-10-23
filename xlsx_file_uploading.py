@@ -5,6 +5,7 @@ import config
 from filter_map import into_json
 
 class Record_xlsx():
+
     def __init__(self, record = None):
         self.mod = record[1]
         self.old_ip = record[4]
@@ -16,10 +17,11 @@ class Record_xlsx():
 def main():
     sheet = loading_worksheet(config.WORKSHEET)
 
-    sheet_tmp = []
+    sheet_tmp = {}
+    count = 0
     for record in sheet:
-        sheet_tmp.append(record.__dict__)
-
+        sheet_tmp.update( **(record.__dict__.update({}'id': count))
+        count += 1
     into_json(sheet_tmp, config.OUTPUTJSONEXCEL)
 
     return sheet
