@@ -10,7 +10,6 @@ def main():
     for record in smart_map:
         record_arr = record.__dict__.values()
         table.loc[len(table)] = list(record_arr)
-    table.loc[len(table)] = list(record_arr)
 
     output(table.to_json(orient='records'), config.TEST)
     double_table = table.duplicated('ip', keep=False)
