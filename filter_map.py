@@ -1,6 +1,6 @@
 from lxml import etree
 import config
-# import re
+import re
 import json
 import os
 
@@ -18,19 +18,33 @@ class Record_dev_xml:
         self.id = id_dev
         self.name = name
         self.ip = ip_address.split(':')[0]
-        self.desc = description
+        self.description = description
         self.model = self.set_model()
 
     def set_model(self):
-        model = self.desc.split('\n')[0]
-        # model = re.sub('[ ]', '_', model).upper()
+        model = self.description.split('\n')[0]
+        model = re.sub('[ ]', '-', model).upper()
         return model
 
 
 def main():
+
     smart_map = reader()
     filtred_map = filter(smart_map)
+
+
     return filtred_map
+
+
+def format_smart(smart):
+    smart_formatted = {}
+    doubles = []
+    for dev_map in smart:
+        if dev_map.ip not in smart_formatted:
+            smart_formatted.update({dev_map.ip: dev_map})
+        else:
+            doubles.append(dev_map.__dict__)
+    return smart_formatted, doubles
 
 
 def into_json(obj, fname=config.OUTPUTJSONMAP):
@@ -82,5 +96,18 @@ def reader():
 
 
 if __name__ == "__main__":
-    into_json(create_model_list(main()))
+    modem_list = {}
+
+    filtred_map = main()
+
+    into_json(create_model_list(filtred_map), config.GROUPMODEL)
+
+    smart_map, doubles = format_smart(filtred_map)
+
+    if len(doubles) == 0:
+        for record in filtred_map:
+            modem_list.update({record.ip: record.__dict__})
+
+    into_json(modem_list)
+
     print('done')

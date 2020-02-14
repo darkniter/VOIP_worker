@@ -43,7 +43,7 @@ def loading_worksheet(name_sheet):
             continue
         if (
             not (
-                    (row[5].value == '' and row[4].value == '')
+                    (row[5].value is None and row[4].value is None)
                     or (row[0].font.strike is True)
                 )
         ):

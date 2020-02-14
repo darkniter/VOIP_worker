@@ -2,12 +2,12 @@ from filter_map import main as xml_map
 from xlsx_file_uploading import main as excel_file
 from filter_map import into_json
 import config
-
+from filter_map import format_smart as duplicate_finder
 
 def main():
     excel = excel_file()
     smart_map = xml_map()
-    smart_map, doubles = format_smart(smart_map)
+    smart_map, doubles = duplicate_finder(smart_map)
     into_json(doubles, config.DOUBLES)
 
     found, not_found, double_record, not_found_ip = comparsion(
@@ -20,17 +20,6 @@ def main():
     into_json(double_record, config.DOUBLERECORDS)
     into_json(not_found_ip, config.NOTFOUNDED_IP)
     print('done')
-
-
-def format_smart(smart):
-    smart_formatted = {}
-    doubles = []
-    for dev_map in smart:
-        if dev_map.ip not in smart_formatted:
-            smart_formatted.update({dev_map.ip: dev_map})
-        else:
-            doubles.append(dev_map.__dict__)
-    return smart_formatted, doubles
 
 
 def comparsion(smart, xl):
